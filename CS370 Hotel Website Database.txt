@@ -1,0 +1,76 @@
+use hotelsite;
+
+create table accounts(
+userid int not null auto_increment,
+login varchar(20) not null,
+pass varchar(20) not null,
+gfirst varchar(20) not null,
+glast varchar(20) not null,
+usertype enum('customer','host'),
+primary key (userid));
+
+create table roomtype(
+rtypeid int not null auto_increment,
+rtype enum('room','suite'),
+primary key (rtypeid));
+
+create table room(
+roomid int not null auto_increment,
+rtypeid int not null,
+hotelid int not null,
+isreserved enum('yes','no'),
+price decimal(10,2) not null,
+primary key (roomid),
+foreign key (hotelid) references hotel (hotelid));
+
+create table booking(
+bookid int not null auto_increment,
+userid int not null,
+roomid int not null,
+checkin date not null,
+checkout date not null,
+primary key (bookid),
+foreign key (userid) references accounts (userid),
+foreign key (roomid) references room (roomid));
+
+create table hotel(
+hotelid int not null auto_increment,
+chainid int not null,
+hname varchar(20) not null,
+phone char(10),
+primary key (hotelid),
+foreign key(chainid) references hchain (chainid));
+
+create table address(
+addressid int not null auto_increment,
+hotelid int not null,
+street varchar(40) not null,
+city varchar(30) not null,
+zipcode char(5) not null,
+primary key (addressid),
+foreign key (hotelid) references hotel (hotelid));
+
+alter table address
+add xcoord int(100) not null;
+
+alter table address
+add ycoord int(100) not null;
+
+alter table room
+add roomnum int(3) not null;
+
+drop roomType;
+
+alter table room
+add rType enum('standard','delux');
+
+alter table room
+add capacity int(1) not null;
+
+create table hchain(
+chainid int not null auto_increment,
+cname varchar(20) not null,
+cuserid int not null,
+cphone char(10),
+primary key(chainid),
+foreign key(cuserid) references accounts (userid));
