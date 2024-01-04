@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<script src="static/user.js"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<div class="container">
+	<title>Hello and welcome!</title>
+	<div class="header">
+	{% if username %}
+	<h1> Hello {{username}}!</h1>
+    <script>var reservations = {{reservations|tojson}}</script>
+    <script>var usertype = {{session['usertype']|tojson}}</script>
+    <script>var userid = {{session['userid']|tojson}}</script>
+	{% else %}
+	<h1> You are not logged in!</h1>
+	{%endif%}
+	<h2> The date is {{curr_date}}.</h2>
+
+	</div>
+	
+	<div class="navbar">
+	{% if not username %}
+		<a href="/login">Login/Register</a>
+	{%endif%}
+		<a href="/map" class="nav-item">Map</a>
+		<a href="/search" class="nav-item">Search</a>
+		<a href="/logout" class="nav-item">End session and change date</a>
+	</div>
+	<br>
+	<div class="content">
+	<div class="hotel">
+	{% if username and session['usertype'] == 'host' %}
+	<fieldset>
+	<legend>Make a new hotel!</legend>
+	<form action="/makehotel" method="post">
+		<label>Hotel name: </label><input type="text" name="hname" required><br>
+		
+		<label>Phone number (optional): </label><input type="tel" name="phone" placeholder="XXXXXXXXXX" pattern="[0-9]{10}"><br>
+		
+		<label>x-coordinate: </label><input type="number" name="xcoord" placeholder="0-100"required min=0 max=100><br>
+		
+		<label>y-coordinate: </label><input type="number" name="ycoord" placeholder="0-100"required min=0 max=100><br>
+		
+		<label>Street address (optional): </label><input type="text" name="address"><br>
+		
+		<label>Number of deluxe rooms: </label><input type="number" name="num_dlx" required min=0><br>
+		
+		<label>Number of standard rooms: </label><input type="number" name="num_std" required min=0><br>
+		
+		<label>Price of standard rooms: </label><input type="number" name="price_std" placeholder="$" required min=0><br>
+		
+		<label>Price of deluxe rooms: </label><input type="number" name="price_dlx" placeholder="$" required min=0><br>
+		
+		<input type="submit" value="submit">
+	</form>
+	</fieldset>
+	</div>
+
+	<table id="tbl"></table>
+	</div>
+	<script>
+		let t = document.getElementById("tbl");
+		let data = Object.keys(reservations[0]);
+		generateTable(t, reservations); // generate the table first
+		generateTableHead(t, data); // then the head
+	</script>
+	{%endif%}
+	{% if username and session['usertype'] == 'customer' %}
+	
+<table id="tbl" class ="tbl"></table>
+</div>
+
+<script>
+	let t = document.getElementById("tbl");
+	let data = Object.keys(reservations[0]);
+	generateTable(t, reservations); // generate the table first
+	generateTableHead(t, data); // then the head
+</script>
+{%endif%}

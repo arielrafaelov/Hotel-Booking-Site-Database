@@ -1,0 +1,68 @@
+<script src="static/search.js"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+{% if availrooms %}
+<script type="text/javascript">
+    var availrooms = {{availrooms|tojson}}
+</script>
+{% endif %}
+<div class="container">
+<div class="header">
+{% if session['username'] %}
+<h1> Hello {{session['username']}}!</h1>
+{% else %}
+<h1> You are not logged in!</h1>
+{%endif%}
+<h2> The date is {{session['curr_date']}}.</h2>
+</div>
+
+<div class="navbar">
+	{% if not session['username'] %}
+		<a href="/login">Login/Register</a>
+	{%endif%}
+		<a href="/" class="nav-item">Home</a>
+		<a href="/map" class="nav-item">Map</a>
+		<a href="/search" class="nav-item">Search</a>
+		<a href="/logout" class="nav-item">End session and change date</a>
+</div>
+
+
+<div class="content">
+<form method="post">
+	<fieldset>
+	<legend>Search Engine</legend>
+    <label>Hotel Search: </label><input type="text" name="keywords" placeholder="Hotel Name or Destination" size="50" required>
+	<br>
+	<br>
+    <label>Check in: </label><input type="date" name="checkin" min={{session['curr_date']}} required>
+	<br>
+	<br>
+    <label>Check out: </label><input type="date" name="checkout" min={{session['curr_date']}} required>
+	<br>
+	<br>
+    <label>Min price: </label><input type="number" name="min_price" placeholder="$" required>
+	<br>
+	<br>
+    <label>Max price: </label><input type="number" name="max_price" placeholder="$" required>
+	<br>
+	<br>
+	<label>Room Type: </label>
+    <select name="roomtype">
+        <option value="1">One person room</option>
+        <option value="2">Two person room</option>
+    </select>
+	<br>
+	<br>
+    <input type=submit value=Search>
+	</fieldset>
+</form>
+
+<table id="tbl"></table>
+</div>
+</div>
+
+<script> 
+let t = document.getElementById("tbl");
+let data = Object.keys(availrooms[0]);
+generateTable(t, availrooms); // generate the table first
+generateTableHead(t, data); // then the head
+</script>

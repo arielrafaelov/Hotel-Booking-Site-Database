@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<div class="container">
+<script src="{{ url_for('static', filename='hotel.js') }}"></script>
+<div class="header">
+	{% if session['username'] %}
+	    <h1> Hello {{session['username']}}!</h1>
+    {%endif%}
+    <h2> The date is {{session['curr_date']}}.</h2>
+</div>
+<div class="navbar">
+{% if not session['username'] %}
+<a href="/login">Login/Register</a>
+{%endif%}
+<a href="/" class="nav-item">Home</a>
+<a href="/map" class="nav-item">Map</a>
+<a href="/search" class="nav-item">Search</a>
+<a href="/logout" class="nav-item">End session and change date</a>
+</div>
+{% if hotelinfo and availrooms%}
+<script type="text/javascript">
+    var hotelinfo = {{hotelinfo|tojson}}
+    var availrooms = {{availrooms|tojson}}
+</script>
+{%endif%}
+<table id="info"></table>
+<script> 
+let t = document.getElementById("info");
+let data = Object.keys(hotelinfo[0]);
+generateTable(t, hotelinfo,0); // generate the table first
+generateTableHead(t, data,0); // then the head
+</script> 
+<table id="roomview"></table>
+<script> 
+let u = document.getElementById("roomview");
+let dataa = Object.keys(availrooms[0]);
+generateTable(u, availrooms,1); // generate the table first
+generateTableHead(u, dataa,1); // then the head
+</script>
+<h2 style="color:red;"> Cancel Booking </h2>
+<input type="text" name="booking_to_cancel" id="booking_to_cancel" placeholder="Booking ID">
+<input type="button" name="submit" id="submit" value="Cancel">
+<script>
+document.getElementById('submit').onclick=function(){ location.href = '/cancelbooking/' + document.getElementById('booking_to_cancel').value; };
+</script>
+</div>

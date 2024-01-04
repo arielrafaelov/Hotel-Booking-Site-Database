@@ -1,0 +1,19 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<div class="register">
+<fieldset>
+<legend>Register Information</legend>
+<div class="register-legend">
+<form method="post">
+    <label>First Name: </label><input type="text" name="firstname" required><br><br>
+	
+    <label>Last Name: </label><input type="text" name="lastname" required><br><br>
+	
+    <label>User Name: </label><input type="text" name="username" required><br><br>
+	
+    <label>Password: </label><input type="password" name="password" required><br><br>
+    <input type=submit value=Register><br><br>
+</form>
+</div>
+</fieldset>
+</div>

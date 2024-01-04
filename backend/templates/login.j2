@@ -1,0 +1,15 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<div class="login">
+<fieldset>
+<legend>Login Information</legend>
+<div class="login-legend">
+<form method="post">
+    <p><label>Enter username: </label><input type="text" name="username" placeholder="Username" required></p>
+    <p><label>Enter password: <input type="password" name="password" placeholder="Password" type = "password" required></p>
+    <p><input type=submit value=Login></p>
+</form>
+<a href="/register">Click here to register</a>
+</fieldset>
+</div>
+</div>

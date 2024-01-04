@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<script src="static/map.js"></script>
+<script type="text/javascript">
+    var username = "{{username}}"
+    var hotel_locations = {{hotel_locations|tojson}}
+</script>
+<div class="container">
+<div class="header">
+{% if username %}
+<h1> Hello {{username}}!</h1>
+{% else %}
+<h1> You are not logged in!</h1>
+{%endif%}
+<h2> The date is {{session['curr_date']}}.</h2>
+</div>
+<div class="navbar">
+{% if not username %}
+<a href="/login">Login/Register</a>
+{%endif%}
+<a href="/" class="nav-item">Home</a>
+<a href="/map" class="nav-item">Map</a>
+<a href="/search" class="nav-item">Search</a>
+<a href="/logout" class="nav-item">End session and change date</a>
+</div>
+<div class="content">
+<table id="tbl"></table>
+</div>
+</div>
+
+
+<script> 
+let t = document.getElementById("tbl");
+let data = Object.keys(hotel_locations[0]);
+generateTable(t, hotel_locations); // generate the table first
+generateTableHead(t, data); // then the head
+</script> 
+<p>map</p>
+
